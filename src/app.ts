@@ -33,3 +33,31 @@ class Person2 {
         console.log('Creating person object...')
     }
 }
+
+
+// Building more useful decorators
+
+function WithTemplate(template: string, hookId: string) {
+    return function(constructor: any) {
+        const hookEl = document.getElementById(hookId)
+        const p = new constructor() // new instance of the class !!! 
+        if (hookEl) {
+            hookEl.innerHTML = template
+            hookEl.querySelector('h1')!.textContent = p.name
+        }
+    }
+}
+
+
+// Multiple Decorators
+// Order of creation of decorators is top down
+// Order of execution of decorators is bottom up
+@Logger2('LOGGING - PERSON')
+@WithTemplate('<h1>My Person Object</h1>', 'app')
+class Person3 {
+    name = 'Max'
+
+    constructor() {
+        console.log('Creating person object...')
+    }
+}
