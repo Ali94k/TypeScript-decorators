@@ -145,3 +145,38 @@ class Product2 {
     return this._price * (1 + tax)
   }
 }
+
+// Autobind decorator
+
+function Autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
+  const originalMethod = descriptor.value
+  const adjDescriptor: PropertyDescriptor = {
+    configurable: true,
+    enumerable: false,
+    get() {
+      console.log('this: ', this)
+      console.log('originalMethod: ', originalMethod)
+
+      const boundFn = originalMethod.bind(this)
+      console.log('boundFn: ', boundFn)
+      console.log('adjDescriptor: ', adjDescriptor)
+      
+      return boundFn
+    },
+  }
+  return adjDescriptor
+}
+
+class Printer {
+  message = 'This works!'
+
+  @Autobind
+  showMessage() {
+    console.log(this.message)
+  }
+}
+
+const p = new Printer()
+
+const button = document.querySelector('button')!
+button.addEventListener('click', p.showMessage)
